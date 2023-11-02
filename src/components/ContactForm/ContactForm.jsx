@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import React from 'react';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { setData, setDataInitialState } from 'components/redux/dataReducer';
 
 const INITIAL_STATE = {
   name: '',
@@ -8,23 +10,24 @@ const INITIAL_STATE = {
 };
 
 const ContactForm = ({ onAdd, onCheckUnique }) => {
-  const [data, setData] = useState({ ...INITIAL_STATE });
+  // const [data, setData] = useState({ ...INITIAL_STATE });
+
+  const data = useSelector(state => state.data);
+  const dispatch = useDispatch();
 
   const onChangeInput = event => {
     const { name, value } = event.target;
-    setData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch(setData({ [name]: value }));
   };
-
+  console.log('data', data);
   const handleFormSubmit = event => {
     event.preventDefault();
     const { name, phone } = data;
+
     const isValidateForm = validateForm();
     if (!isValidateForm) return;
     onAdd({ id: nanoid(), name, phone });
-    setData({ ...INITIAL_STATE });
+    dispatch(setDataInitialState());
   };
   const validateForm = () => {
     const { name, phone } = data;
