@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import { useDispatch, useSelector } from 'react-redux';
 import ContactList from './ContactList/ContactList';
