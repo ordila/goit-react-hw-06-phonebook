@@ -1,23 +1,18 @@
 import { useEffect, useState } from 'react';
 import ContactForm from './ContactForm/ContactForm';
+import { useDispatch, useSelector } from 'react-redux';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
 import React from 'react';
+import { addContact, deleteContact, setFilter } from './redux/contactsReducer';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    if (localStorage) {
-      const data = localStorage.getItem('key');
-      if (data) {
-        const parseData = JSON.parse(data);
-        return parseData;
-      }
-    }
-  });
-  const [filter, setFilter] = useState('');
+  const contacts = useSelector(state => state.contacts.contacts);
+  const filter = useSelector(state => state.contacts.filter);
+  const dispatch = useDispatch();
 
-  const handleAddContact = newContact => setContacts([...contacts, newContact]);
+  const handleAddContact = newContact => dispatch(addContact(newContact));
 
   const handleCheckUniqueContact = name => {
     const isExistContact = !!contacts.find(contact => contact.name === name);
@@ -25,10 +20,11 @@ export const App = () => {
     return !isExistContact;
   };
   const handleRempveContact = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
+    // console.log('id', id);
+    dispatch(deleteContact(id));
   };
 
-  const handleFilterChange = filter => setFilter(filter);
+  const handleFilterChange = filter => dispatch(setFilter(filter));
 
   const getVisibleContacts = () => {
     if (!filter) {
@@ -38,13 +34,6 @@ export const App = () => {
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
-
-  useEffect(() => {
-    if (localStorage) {
-      const jsonData = JSON.stringify(contacts);
-      localStorage.setItem('key', jsonData);
-    }
-  }, [contacts, filter]);
 
   const visibleContacts = getVisibleContacts();
   return (
