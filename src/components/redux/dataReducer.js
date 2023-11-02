@@ -9,7 +9,6 @@ const dataSlicer = createSlice({
   initialState,
   reducers: {
     setData: (state, action) => {
-      // Use immer to create a new state based on the previous state
       return { ...state, ...action.payload };
     },
     setDataInitialState: (state, action) => {

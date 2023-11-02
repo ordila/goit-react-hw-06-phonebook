@@ -1,17 +1,9 @@
-import { useState } from 'react';
 import React from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { setData, setDataInitialState } from 'components/redux/dataReducer';
 
-const INITIAL_STATE = {
-  name: '',
-  phone: '',
-};
-
 const ContactForm = ({ onAdd, onCheckUnique }) => {
-  // const [data, setData] = useState({ ...INITIAL_STATE });
-
   const data = useSelector(state => state.data);
   const dispatch = useDispatch();
 
